@@ -28,13 +28,28 @@
         </div>
     </div>
 
-    @if(config('app.telegram_bot_url') || env('TELEGRAM_BOT_URL'))
-        <a href="{{ config('app.telegram_bot_url', env('TELEGRAM_BOT_URL')) }}"
-           target="_blank" rel="noopener noreferrer"
-           class="btn btn-primary position-fixed d-flex align-items-center gap-2 shadow-lg"
-           style="bottom: 24px; right: 24px; z-index: 1050;">
-            <span class="fs-5">💬</span> Chat Telegram
-        </a>
+    <a href="https://t.me/teknofo_bot"
+       target="_blank" rel="noopener noreferrer"
+       class="btn btn-primary position-fixed d-flex align-items-center gap-2 shadow-lg"
+       style="bottom: 24px; right: 24px; z-index: 1050;">
+        <span class="fs-5">💬</span> Chat Telegram
+    </a>
+
+    @if(isset($categories) && $categories->count() > 0)
+        <div class="mb-4 overflow-auto">
+            <div class="d-flex gap-2 pb-2">
+                <a href="{{ route('home', request()->except('category')) }}" 
+                   class="btn btn-sm {{ !request('category') ? 'btn-dark' : 'btn-outline-dark' }} text-nowrap rounded-pill px-3">
+                    Semua
+                </a>
+                @foreach($categories as $category)
+                    <a href="{{ route('home', array_merge(request()->except('category'), ['category' => $category->slug])) }}" 
+                       class="btn btn-sm {{ request('category') == $category->slug ? 'btn-dark' : 'btn-outline-dark' }} text-nowrap rounded-pill px-3">
+                        {{ $category->name }}
+                    </a>
+                @endforeach
+            </div>
+        </div>
     @endif
 
     @if($products->isEmpty())

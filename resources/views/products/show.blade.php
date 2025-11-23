@@ -47,10 +47,19 @@
                                 <label class="form-label mb-0">Qty</label>
                                 <input type="number" name="qty" value="1" min="1" max="{{ $product->stock }}" class="form-control w-auto" style="max-width: 120px;">
                             </div>
-                            <button type="submit" class="btn btn-primary w-100" @if($product->stock <= 0) disabled @endif>
-                                Tambah ke Keranjang
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary flex-grow-1" @if($product->stock <= 0) disabled @endif>
+                                    Tambah ke Keranjang
+                                </button>
+                        </form>
+                        <form action="{{ route('wishlist.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" class="btn btn-outline-danger" title="Tambah ke Wishlist">
+                                ❤
                             </button>
                         </form>
+                        </div>
                     @else
                         <div class="alert alert-info mt-3">
                             Silakan <a href="{{ route('login') }}">login</a> untuk membeli produk ini.
@@ -58,6 +67,65 @@
                     @endauth
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-lg-8">
+            <h3 class="h4 mb-4">Ulasan Produk</h3>
+
+            @if($product->reviews->isEmpty())
+                <div class="alert alert-light border">Belum ada ulasan untuk produk ini.</div>
+            @else
+                <div class="d-flex flex-column gap-3 mb-4">
+                    @foreach($product->reviews as $review)
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="fw-semibold">{{ $review->user->name }}</div>
+                                    <div class="text-muted small">{{ $review->created_at->diffForHumans() }}</div>
+                                </div>
+                                <div class="mb-2 text-warning">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $review->rating) ★ @else ☆ @endif
+                                    @endfor
+                                </div>
+                                <p class="mb-0 text-muted">{{ $review->comment }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            @auth
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Tulis Ulasan</h5>
+                        <form action="{{ route('reviews.store', $product) }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label>
+                                <select name="rating" class="form-select w-auto">
+                                    <option value="5">5 - Sangat Bagus</option>
+                                    <option value="4">4 - Bagus</option>
+                                    <option value="3">3 - Cukup</option>
+                                    <option value="2">2 - Kurang</option>
+                                    <option value="1">1 - Buruk</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Komentar</label>
+                                <textarea name="comment" rows="3" class="form-control" placeholder="Bagaimana pendapatmu tentang produk ini?"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <div class="alert alert-info">
+                    Silakan <a href="{{ route('login') }}">login</a> untuk menulis ulasan.
+                </div>
+            @endauth
         </div>
     </div>
 @endsection

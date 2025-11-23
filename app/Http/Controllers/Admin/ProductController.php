@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
@@ -49,7 +50,8 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('admin.products.form', ['product' => new Product()]);
+        $categories = Category::all();
+        return view('admin.products.form', ['product' => new Product(), 'categories' => $categories]);
     }
 
     public function store(StoreProductRequest $request)
@@ -70,7 +72,8 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        return view('admin.products.form', compact('product'));
+        $categories = Category::all();
+        return view('admin.products.form', compact('product', 'categories'));
     }
 
     public function update(UpdateProductRequest $request, Product $product)

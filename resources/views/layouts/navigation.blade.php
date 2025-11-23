@@ -5,28 +5,38 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         Home
                     </x-nav-link>
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
                         Cart
                     </x-nav-link>
+                    <x-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
+                        Wishlist
+                    </x-nav-link>
                     <x-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.*')">
                         Riwayat Belanja
                     </x-nav-link>
+                    <x-nav-link :href="route('messages.index')" :active="request()->routeIs('messages.*')">
+                        Pesan
+                    </x-nav-link>
                     @if(Auth::user()?->isAdmin())
-                        <x-nav-link :href="route('admin.products.index')" :active="request()->is('admin/*')">
-                            Admin
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                            Dashboard
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.products.index')" :active="request()->is('admin/products*')">
+                            Admin Produk
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.orders.index')" :active="request()->is('admin/orders*')">
+                            Admin Pesanan
                         </x-nav-link>
                     @endif
                 </div>
@@ -81,21 +91,31 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 Home
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
                 Cart
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
+                Wishlist
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('orders.history')" :active="request()->routeIs('orders.*')">
                 Riwayat Belanja
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('messages.index')" :active="request()->routeIs('messages.*')">
+                Pesan
+            </x-responsive-nav-link>
             @if(Auth::user()?->isAdmin())
-                <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->is('admin/*')">
-                    Admin
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    Dashboard
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->is('admin/products*')">
+                    Admin Produk
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.orders.index')" :active="request()->is('admin/orders*')">
+                    Admin Pesanan
                 </x-responsive-nav-link>
             @endif
         </div>

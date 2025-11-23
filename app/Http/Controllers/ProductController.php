@@ -15,9 +15,16 @@ class ProductController extends Controller
             $query->where('name', 'like', '%' . $request->q . '%');
         }
 
-        $products = $query->orderByDesc('created_at')->paginate(12);
+        if ($request->filled('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
 
-        return view('home', compact('products'));
+        $products = $query->orderByDesc('created_at')->paginate(12)->withQueryString();
+        $categories = \App\Models\Category::all();
+
+        return view('home', compact('products', 'categories'));
     }
 
     public function show(Product $product)

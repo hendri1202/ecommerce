@@ -27,12 +27,14 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                     @auth
                         @if(auth()->user()->isAdmin())
+                            <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('admin.products.index') }}">Admin Produk</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('admin.orders.index') }}">Admin Pesanan</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('messages.index') }}">Pesan</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('profile.edit') }}">Profil</a></li>
                         @else
                             <li class="nav-item"><a class="nav-link" href="{{ route('cart.index') }}">Cart</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('wishlist.index') }}">Wishlist</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('orders.history') }}">Riwayat Belanja</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('messages.index') }}">Pesan</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('profile.edit') }}">Profil</a></li>

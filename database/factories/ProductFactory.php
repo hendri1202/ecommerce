@@ -28,6 +28,7 @@ class ProductFactory extends Factory
             // menggunakan placeholder image dari picsum
             'image' => "https://picsum.photos/seed/product{$seed}/800/600",
             'is_active' => $this->faker->boolean(85),
+            'category_id' => \App\Models\Category::inRandomOrder()->first()?->id,
         ];
     }
 }
