@@ -28,11 +28,12 @@
         </div>
     </div>
 
+    <!-- Telegram Button Fixed Bottom Right -->
     <a href="https://t.me/teknofo_bot"
        target="_blank" rel="noopener noreferrer"
-       class="btn btn-primary position-fixed d-flex align-items-center gap-2 shadow-lg"
-       style="bottom: 24px; right: 24px; z-index: 1050;">
-        <span class="fs-5">💬</span> Chat Telegram
+       class="btn btn-primary position-fixed d-flex align-items-center gap-2 shadow-lg rounded-pill"
+       style="bottom: 20px; right: 20px; z-index: 9999; border: 2px solid white;">
+        <span class="fs-5">💬</span> <span class="fw-semibold">Chat Telegram</span>
     </a>
 
     @if(isset($categories) && $categories->count() > 0)
@@ -53,38 +54,46 @@
     @endif
 
     @if($products->isEmpty())
-        <div class="alert alert-secondary text-center">Belum ada produk yang tersedia.</div>
+        <div class="alert alert-secondary text-center py-5">
+            <div class="mb-3">📦</div>
+            Belum ada produk yang tersedia saat ini.
+        </div>
     @else
-        <div class="row g-3">
+        <div class="row g-3 g-md-4">
             @foreach($products as $product)
                 @php
                     $imgSrc = $product->image
                         ? (\Illuminate\Support\Str::startsWith($product->image, ['http://','https://'])
                             ? $product->image
                             : asset('storage/' . $product->image))
-                        : 'https://via.placeholder.com/600x400?text=No+Image';
+                        : 'https://via.placeholder.com/400x400?text=No+Image';
                 @endphp
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="ratio ratio-4x3">
+                <!-- Adjusted for 3 per row on medium+ screens, 2 per row on mobile -->
+                <div class="col-6 col-md-4">
+                    <div class="card h-100 shadow-sm border-0 overflow-hidden transition-hover">
+                        <!-- Changed ratio to 1x1 for square, cleaner look -->
+                        <div class="ratio ratio-1x1 bg-light">
                             <img src="{{ $imgSrc }}" class="card-img-top object-fit-cover" alt="{{ $product->name }}">
                         </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title mb-1">{{ $product->name }}</h5>
-                            <p class="text-muted small mb-2">Stok:
-                                <span class="{{ $product->stock > 0 ? 'text-success' : 'text-danger' }}">
-                                    {{ $product->stock > 0 ? $product->stock . ' tersedia' : 'Habis' }}
+                        <div class="card-body d-flex flex-column p-3">
+                            <h5 class="card-title h6 fw-bold text-truncate mb-1" title="{{ $product->name }}">{{ $product->name }}</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-primary fw-bold">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                            </div>
+                            <p class="text-muted small mb-3 flex-fill">
+                                <span class="{{ $product->stock > 0 ? 'text-success' : 'text-danger' }} fw-semibold">
+                                    <i class="bi {{ $product->stock > 0 ? 'bi-check-circle' : 'bi-x-circle' }}"></i>
+                                    {{ $product->stock > 0 ? 'Stok: ' . $product->stock : 'Habis' }}
                                 </span>
                             </p>
-                            <div class="fw-semibold fs-5 text-primary mb-3">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                            <a href="{{ route('products.show', $product) }}" class="btn btn-outline-primary w-100 mt-auto">Lihat Detail</a>
+                            <a href="{{ route('products.show', $product) }}" class="btn btn-sm btn-outline-primary w-100 mt-auto stretched-link">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
 
-        <div class="mt-4">
+        <div class="mt-5 d-flex justify-content-center">
             {{ $products->withQueryString()->links() }}
         </div>
     @endif
